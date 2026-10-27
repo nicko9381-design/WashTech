@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const { initializeDatabase } = require('./src/config/database');
+const layananRoutes = require('./src/routes/layananRoutes');
 const { success, fail } = require('./src/utils/response');
 
 const app = express();
@@ -16,6 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   success(res, 200, 'WashTech REST API berjalan', { version: '1.0.0' });
 });
+
+// Resource routes
+app.use('/api/layanan', layananRoutes);
 
 // 404 handler
 app.use((req, res) => {
