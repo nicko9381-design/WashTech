@@ -31,3 +31,11 @@ CREATE TABLE IF NOT EXISTS pesanan (
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
 );
+
+-- Seed initial data layanan
+INSERT OR IGNORE INTO layanan (id, nama, deskripsi, harga_per_kg, estimasi_hari) VALUES
+(1, 'Cuci Kering Reguler', 'Cuci, keringkan, dan lipat rapi', 6000, 3),
+(2, 'Cuci + Setrika', 'Cuci bersih lalu disetrika uap', 8000, 3),
+(3, 'Setrika Saja', 'Khusus pakaian yang sudah bersih', 5000, 2),
+(4, 'Cuci Express (1 Hari)', 'Layanan kilat selesai dalam 1 hari', 12000, 1),
+(5, 'Dry Clean (Jas/Gaun)', 'Perawatan khusus bahan sensitif', 25000, 4);
