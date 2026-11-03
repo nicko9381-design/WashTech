@@ -1,28 +1,30 @@
 const { dbRun, dbGet, dbAll } = require('../middlewares_helpers/sqlite3_helpers');
 
-const COLUMNS = `id, nama, deskripsi, harga_per_kg AS hargaPerKg, estimasi_hari AS estimasiHari, created_at AS createdAt`;
+const COLUMNS = `
+  l.id,
+  l.nama,
+  l.deskripsi,
+  l.harga_per_kg AS hargaPerKg,
+  l.estimasi_hari AS estimasiHari,
+  l.aktif,
+  l.created_at AS createdAt,
+  (SELECT COUNT(*) FROM pesanan p WHERE p.layanan_id = l.id) AS totalPesanan
+`;
 
 /* =============== READ (all) =============== */
-const findAllLayanan = async (search = '') => {
-  if (search && search.trim() !== '') {
-    const q = `%${search.trim()}%`;
-    return await dbAll(
-      `SELECT ${COLUMNS} FROM layanan WHERE nama LIKE ? ORDER BY id ASC`,
-      [q]
-    );
-  }
-  return await dbAll(`SELECT ${COLUMNS} FROM layanan ORDER BY id ASC`);
+const findAllLayanan = async () => {
+  return await dbAll(`SELECT ${COLUMNS} FROM layanan l ORDER BY l.id ASC`);
 };
 
 /* =============== READ (by id) =============== */
 const findLayananById = async (id) => {
-  return await dbGet(`SELECT ${COLUMNS} FROM layanan WHERE id = ?`, [id]);
+  return await dbGet(`SELECT ${COLUMNS} FROM layanan l WHERE l.id = ?`, [id]);
 };
 
 /* =============== READ (by nama) =============== */
 const findLayananByNama = async (nama) => {
   return await dbGet(
-    `SELECT ${COLUMNS} FROM layanan WHERE nama = ? COLLATE NOCASE`,
+    `SELECT ${COLUMNS} FROM layanan l WHERE l.nama = ? COLLATE NOCASE`,
     [nama]
   );
 };
@@ -30,14 +32,15 @@ const findLayananByNama = async (nama) => {
 /* =============== CREATE =============== */
 const createLayanan = async (body) => {
   const query = `
-    INSERT INTO layanan (nama, deskripsi, harga_per_kg, estimasi_hari)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO layanan (nama, deskripsi, harga_per_kg, estimasi_hari, aktif)
+    VALUES (?, ?, ?, ?, ?)
   `;
   const values = [
     body.nama,
     body.deskripsi ?? null,
     body.hargaPerKg,
     body.estimasiHari ?? 2,
+    body.aktif !== undefined ? (body.aktif ? 1 : 0) : 1,
   ];
 
   const { lastID } = await dbRun(query, values);
@@ -51,7 +54,7 @@ const updateLayanan = async (id, body) => {
 
   const query = `
     UPDATE layanan
-    SET nama = ?, deskripsi = ?, harga_per_kg = ?, estimasi_hari = ?
+    SET nama = ?, deskripsi = ?, harga_per_kg = ?, estimasi_hari = ?, aktif = ?
     WHERE id = ?
   `;
   const values = [
@@ -59,6 +62,7 @@ const updateLayanan = async (id, body) => {
     body.deskripsi !== undefined ? body.deskripsi : existing.deskripsi,
     body.hargaPerKg !== undefined ? body.hargaPerKg : existing.hargaPerKg,
     body.estimasiHari !== undefined ? body.estimasiHari : existing.estimasiHari,
+    body.aktif !== undefined ? (body.aktif ? 1 : 0) : existing.aktif,
     id,
   ];
 
