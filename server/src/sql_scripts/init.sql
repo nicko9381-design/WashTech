@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS pelanggan (
   nama TEXT NOT NULL,
   telepon TEXT NOT NULL UNIQUE,
   alamat TEXT,
+  aktif INTEGER NOT NULL DEFAULT 1 CHECK (aktif IN (0, 1)),
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
 );
 
@@ -40,3 +41,10 @@ INSERT OR IGNORE INTO layanan (id, nama, deskripsi, harga_per_kg, estimasi_hari)
 (3, 'Setrika Saja', 'Khusus pakaian yang sudah bersih', 5000, 2),
 (4, 'Cuci Express (1 Hari)', 'Layanan kilat selesai dalam 1 hari', 12000, 1),
 (5, 'Dry Clean (Jas/Gaun)', 'Perawatan khusus bahan sensitif', 25000, 4);
+
+-- Seed initial data pelanggan
+INSERT OR IGNORE INTO pelanggan (id, nama, telepon, alamat) VALUES
+(1, 'Budi Santoso', '081234567890', 'Jl. Merdeka No. 12, Medan'),
+(2, 'Siti Aminah', '081298765432', 'Jl. Sudirman No. 5, Medan'),
+(3, 'Andi Pratama', '085277788899', 'Kos Melati Kamar 7, Jl. Setia Budi'),
+(4, 'Dewi Lestari', '082111222333', 'Perumahan Griya Asri Blok C3');
