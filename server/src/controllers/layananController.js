@@ -2,12 +2,11 @@ const layananModel = require('../models/layananModel');
 const { success, fail } = require('../utils/response');
 
 /* =========================================================
- *  GET /api/layanan — semua layanan (bisa ?search=)
+ *  GET /api/layanan — semua layanan
  * ========================================================= */
 const getAllLayanan = async (req, res) => {
   try {
-    const { search } = req.query;
-    const layanan = await layananModel.findAllLayanan(search);
+    const layanan = await layananModel.findAllLayanan();
     success(res, 200, 'Berhasil mengambil semua layanan', layanan);
   } catch (error) {
     console.error('[getAllLayanan]', error);
@@ -36,7 +35,7 @@ const getLayananById = async (req, res) => {
  * ========================================================= */
 const createLayanan = async (req, res) => {
   try {
-    const { nama, deskripsi, hargaPerKg, estimasiHari } = req.body;
+    const { nama, deskripsi, hargaPerKg, estimasiHari, aktif } = req.body;
 
     // Validasi input
     if (!nama || typeof nama !== 'string' || nama.trim().length < 2) {
@@ -60,6 +59,7 @@ const createLayanan = async (req, res) => {
       deskripsi: deskripsi ? deskripsi.trim() : null,
       hargaPerKg: Math.round(Number(hargaPerKg)),
       estimasiHari: estimasiHari !== undefined ? Number(estimasiHari) : 2,
+      aktif: aktif !== undefined ? (aktif ? 1 : 0) : 1,
     });
 
     success(res, 201, 'Layanan berhasil ditambahkan', created);
@@ -78,7 +78,7 @@ const updateLayanan = async (req, res) => {
     const existing = await layananModel.findLayananById(id);
     if (!existing) return fail(res, 404, 'Layanan tidak ditemukan');
 
-    const { nama, deskripsi, hargaPerKg, estimasiHari } = req.body;
+    const { nama, deskripsi, hargaPerKg, estimasiHari, aktif } = req.body;
 
     if (nama !== undefined && (typeof nama !== 'string' || nama.trim().length < 2)) {
       return fail(res, 400, 'Validasi gagal', 'nama layanan minimal 2 karakter');
@@ -101,6 +101,7 @@ const updateLayanan = async (req, res) => {
       deskripsi: deskripsi !== undefined ? (deskripsi ? deskripsi.trim() : null) : existing.deskripsi,
       hargaPerKg: hargaPerKg !== undefined ? Math.round(Number(hargaPerKg)) : existing.hargaPerKg,
       estimasiHari: estimasiHari !== undefined ? Number(estimasiHari) : existing.estimasiHari,
+      aktif: aktif !== undefined ? (aktif ? 1 : 0) : existing.aktif,
     });
 
     success(res, 200, 'Layanan berhasil diperbarui', updated);
@@ -121,7 +122,12 @@ const deleteLayanan = async (req, res) => {
 
     const pesananCount = await layananModel.countPesananByLayanan(id);
     if (pesananCount > 0) {
-      return fail(res, 409, 'Layanan tidak bisa dihapus', `Masih dipakai di ${pesananCount} pesanan`);
+      return fail(
+        res,
+        409,
+        'Layanan tidak bisa dihapus',
+        `Layanan ini sudah digunakan pada ${pesananCount} transaksi pesanan. Silakan nonaktifkan layanan jika sudah tidak ingin digunakan lagi.`
+      );
     }
 
     await layananModel.deleteLayanan(id);

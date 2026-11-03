@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS layanan (
   deskripsi TEXT,
   harga_per_kg INTEGER NOT NULL CHECK (harga_per_kg >= 0),
   estimasi_hari INTEGER NOT NULL CHECK (estimasi_hari >= 0),
+  aktif INTEGER NOT NULL DEFAULT 1 CHECK (aktif IN (0, 1)),
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
 );
 
