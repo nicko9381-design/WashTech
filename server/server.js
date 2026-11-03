@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const { initializeDatabase } = require('./src/config/database');
 const layananRoutes = require('./src/routes/layananRoutes');
+const pelangganRoutes = require('./src/routes/pelangganRoutes')
 const { success, fail } = require('./src/utils/response');
 
 const app = express();
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 // Resource routes
 app.use('/api/layanan', layananRoutes);
+app.use('/api/pelanggan', pelangganRoutes);
 
 // 404 handler
 app.use((req, res) => {
