@@ -25,8 +25,7 @@ CREATE TABLE IF NOT EXISTS pesanan (
   layanan_id INTEGER NOT NULL REFERENCES layanan(id),
   berat_kg REAL NOT NULL CHECK (berat_kg > 0),
   total_harga INTEGER NOT NULL CHECK (total_harga >= 0),
-  status TEXT NOT NULL DEFAULT 'diterima'
-    CHECK (status IN ('diterima','diproses','selesai','diambil')),
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','diterima','diproses','selesai','diambil')),
   catatan TEXT,
   tanggal_masuk TEXT NOT NULL,
   estimasi_selesai TEXT NOT NULL,
@@ -48,3 +47,11 @@ INSERT OR IGNORE INTO pelanggan (id, nama, telepon, alamat) VALUES
 (2, 'Siti Aminah', '081298765432', 'Jl. Sudirman No. 5, Medan'),
 (3, 'Andi Pratama', '085277788899', 'Kos Melati Kamar 7, Jl. Setia Budi'),
 (4, 'Dewi Lestari', '082111222333', 'Perumahan Griya Asri Blok C3');
+
+-- Seed initial data pesanan
+INSERT OR IGNORE INTO pesanan (id, pelanggan_id, layanan_id, berat_kg, total_harga, status, catatan, tanggal_masuk, estimasi_selesai) VALUES
+(1, 1, 2, 3.5, 28000, 'diproses', 'Pisahkan baju putih', date('now'), date('now', '+3 days')),
+(2, 2, 4, 2.0, 24000, 'selesai', NULL, date('now'), date('now', '+1 days')),
+(3, 3, 1, 5.0, 30000, 'diterima', 'Ada noda di kemeja biru', date('now'), date('now', '+3 days')),
+(4, 4, 5, 1.5, 37500, 'diproses', 'Jas hitam, hati-hati', date('now'), date('now', '+4 days')),
+(5, 1, 3, 2.5, 12500, 'diambil', NULL, date('now'), date('now', '+2 days'));
