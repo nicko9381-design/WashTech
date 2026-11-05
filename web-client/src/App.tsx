@@ -5,6 +5,7 @@ import Navbar from './shared/components/Navbar'
 import DashboardPage from './features/dashboard/DashboardPage'
 import PesananPage from './features/pesanan/PesananPage'
 import PelangganPage from './features/pelanggan/PelangganPage'
+import LayananPage from './features/layanan/LayananPage'
 
 const { Content, Footer } = Layout
 
@@ -49,6 +50,7 @@ export default function App() {
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/pesanan" element={<PesananPage />} />
                 <Route path="/pelanggan" element={<PelangganPage />} />
+                <Route path="/layanan" element={<LayananPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Content>

@@ -4,6 +4,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Dashboard' },
   { to: '/pesanan', label: 'Pesanan' },
   { to: '/pelanggan', label: 'Pelanggan' },
+  { to: '/layanan', label: 'Layanan' },
 ]
 
 export function LogoMark() {
