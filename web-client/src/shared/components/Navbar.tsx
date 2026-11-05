@@ -2,6 +2,7 @@ import { NavLink, Link } from 'react-router-dom'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard' },
+  { to: '/pesanan', label: 'Pesanan' },
 ]
 
 export function LogoMark() {

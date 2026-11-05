@@ -3,6 +3,7 @@ import { ConfigProvider, App as AntdApp, Layout } from 'antd'
 import './App.css'
 import Navbar from './shared/components/Navbar'
 import DashboardPage from './features/dashboard/DashboardPage'
+import PesananPage from './features/pesanan/PesananPage'
 
 const { Content, Footer } = Layout
 
@@ -45,6 +46,7 @@ export default function App() {
             <Content className="main-content">
               <Routes>
                 <Route path="/" element={<DashboardPage />} />
+                <Route path="/pesanan" element={<PesananPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Content>
