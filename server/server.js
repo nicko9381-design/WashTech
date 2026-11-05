@@ -5,6 +5,7 @@ const { initializeDatabase } = require('./src/config/database');
 const layananRoutes = require('./src/routes/layananRoutes');
 const pelangganRoutes = require('./src/routes/pelangganRoutes')
 const pesananRoutes = require('./src/routes/pesananRoutes');
+const ringkasanRoutes = require('./src/routes/ringkasanRoutes');
 const { success, fail } = require('./src/utils/response');
 
 const app = express();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 // Resource routes
+app.use('/api/ringkasan', ringkasanRoutes);
 app.use('/api/layanan', layananRoutes);
 app.use('/api/pelanggan', pelangganRoutes);
 app.use('/api/pesanan', pesananRoutes);
