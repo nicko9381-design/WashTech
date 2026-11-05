@@ -4,6 +4,7 @@ import './App.css'
 import Navbar from './shared/components/Navbar'
 import DashboardPage from './features/dashboard/DashboardPage'
 import PesananPage from './features/pesanan/PesananPage'
+import PelangganPage from './features/pelanggan/PelangganPage'
 
 const { Content, Footer } = Layout
 
@@ -47,6 +48,7 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/pesanan" element={<PesananPage />} />
+                <Route path="/pelanggan" element={<PelangganPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Content>
