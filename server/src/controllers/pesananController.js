@@ -52,9 +52,9 @@ const createPesanan = async (req, res) => {
     if (beratKg === undefined || beratKg === null || isNaN(beratKg) || Number(beratKg) <= 0) {
       return fail(res, 400, 'Validasi gagal', 'beratKg harus angka > 0');
     }
-    // if (!STATUSES.includes(status ?? '')) {
-    //   return fail(res, 400, 'Validasi gagal', `status harus salah satu dari: ${STATUSES.join(', ')}`);
-    // }
+    if (status && !STATUSES.includes(status ?? '')) {
+      return fail(res, 400, 'Validasi gagal', `status harus salah satu dari: ${STATUSES.join(', ')}`);
+    }
 
     // Pastikan relasi ada
     const [pelanggan, layanan] = await Promise.all([
